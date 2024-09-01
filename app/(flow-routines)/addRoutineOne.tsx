@@ -1,8 +1,8 @@
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback } from "react";
 import { styled } from "nativewind";
 import { View, Text, TextInput, Pressable } from "react-native";
-import CardRecipe from "@/components/CardRecipe";
 import { Link } from "expo-router";
+import ModeSelector from "@/components/RoutineModeSelector";
 
 const daysOfWeek: string[] = [
   "Lunes",
@@ -30,7 +30,7 @@ const DayButton = React.memo(({ day, isSelected, onPress }: DayButtonProps) => (
       isSelected ? "bg-green-600" : "bg-gray-300"
     }`}
   >
-    <Text className="text-black">{day.charAt(0)}</Text>
+    <Text className="text-black text-xl">{day.charAt(0)}</Text>
   </StyledPressable>
 ));
 
@@ -60,11 +60,9 @@ export default function AddRoutineOne() {
       />
       <View>
         <Text className="text-center m-3 text-white">Modo Rutina</Text>
-        <Pressable className="bg-amber-500/80 p-6 rounded-2xl m-3 active:bg-amber-700 active:scale-95 transition">
-          <View className="flex-row justify-around items-center">
-            <Text className="text-lg font-bold">Swich modebl</Text>
-          </View>
-        </Pressable>
+        <View className="flex-row justify-center items-center">
+          <ModeSelector />
+        </View>
         <Text className="text-center mb-3 text-white">Frecuencia Semanal</Text>
         <View className="flex-row justify-evenly gap-2 m-2">
           {daysOfWeek.map((day) => (

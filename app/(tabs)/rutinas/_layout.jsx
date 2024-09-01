@@ -4,30 +4,49 @@ import { CardRoutine } from "@/components/CardRoutine";
 import CustomCalendar from "@/components/CustomCalendar";
 import { PlusIcon } from "@/components/Icons";
 import { Link, Stack } from "expo-router";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+
+const TopTab = createMaterialTopTabNavigator();
+
+function screencomponent() {
+  return <View></View>;
+}
 
 export default function RutinasLayout() {
   return (
     <CalendarProvider date={"2024-08-23"}>
-      <Stack className="flex-1">
-        <Stack.Screen
-          name="index"
-          options={{ title: "Rutinas", headerShown: false }}
+      <CustomCalendar />
+      <TopTab.Navigator
+        screenOptions={{
+          tabBarStyle: {
+            backgroundColor: "#fff",
+            height: 60,
+          },
+          tabBarLabelStyle: {
+            fontSize: 20,
+          },
+          tabBarIndicatorStyle: {
+            backgroundColor: "#fff",
+          },
+        }}
+      >
+        <TopTab.Screen
+          name="Rutinas"
+          component={CardRoutine}
+          options={{ tabBarLabel: "Rutinas" }}
         />
-        <Stack.Screen
-          name="addRoutineOne"
-          options={{
-            title: "Rutina 1",
-            headerShown: false,
-          }}
+        <TopTab.Screen
+          name="Hoy"
+          component={screencomponent}
+          options={{ tabBarLabel: "Hoy" }}
+          tabBarLabelStyle={{ color: "red" }}
         />
-        <Stack.Screen
-          name="addRoutineTwo"
-          options={{
-            title: "Rutina 2",
-            headerShown: true,
-          }}
+        <TopTab.Screen
+          name="Mas"
+          component={screencomponent}
+          options={{ tabBarLabel: "Mas" }}
         />
-      </Stack>
+      </TopTab.Navigator>
     </CalendarProvider>
   );
 }
