@@ -74,7 +74,7 @@ export default function AddRoutineOne() {
             />
           ))}
         </View>
-        <Link href={"./addRoutineTwo"} asChild>
+        <Link href={"/addRoutineTwo"} asChild>
           <Pressable className="bg-amber-500/80 p-6 rounded-2xl m-3 active:bg-amber-700 active:scale-95 transition">
             <View className="flex-row justify-around items-center">
               <Text className="text-lg font-bold">Siguiente</Text>

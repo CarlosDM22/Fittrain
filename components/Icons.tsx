@@ -32,10 +32,18 @@ export const PlusIcon = (props: any) => (
   <FontAwesome6 name="plus" size={24} color="black" {...props} />
 );
 
+export const MinusIcon = (props: any) => (
+  <FontAwesome6 name="minus" size={24} color="black" {...props} />
+);
+
 export const BackIcon = (props: any) => (
   <FontAwesome6 name="arrow-left" size={24} color="black" {...props} />
 );
 
 export const editIcon = (props: any) => (
   <FontAwesome6 name="edit" size={24} color="black" {...props} />
+);
+
+export const TrashIcon = (props: any) => (
+  <FontAwesome6 name="trash" size={24} color="black" {...props} />
 );

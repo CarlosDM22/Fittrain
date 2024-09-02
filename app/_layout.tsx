@@ -20,8 +20,28 @@ export default function RootLayout() {
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen
-            name="(flow-routines)"
-            options={{ headerShown: false }}
+            name="(flow-routines)/addRoutineOne"
+            options={{
+              headerShown: true,
+              title: "Rutinas",
+              headerTitle: "Nueva Rutina",
+              headerTitleAlign: "center",
+              headerShadowVisible: false,
+              headerTintColor: "white",
+              headerStyle: { backgroundColor: "#222" },
+            }}
+          />
+          <Stack.Screen
+            name="(flow-routines)/addRoutineTwo"
+            options={{
+              headerShown: true,
+              title: "Rutinas",
+              headerTitle: "Nueva Rutina",
+              headerTitleAlign: "center",
+              headerShadowVisible: false,
+              headerTintColor: "white",
+              headerStyle: { backgroundColor: "#222" },
+            }}
           />
         </Stack>
       </SafeAreaView>
