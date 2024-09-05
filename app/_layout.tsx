@@ -17,7 +17,7 @@ export default function RootLayout() {
     <SafeAreaProvider>
       <SafeAreaView style={{ flex: 1, backgroundColor: "#222" }}>
         <StatusBar style="light" />
-        <Stack>
+        <Stack initialRouteName="/ageSelector">
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen
             name="(flow-routines)/addRoutineOne"
@@ -42,6 +42,16 @@ export default function RootLayout() {
               headerTintColor: "white",
               headerStyle: { backgroundColor: "#222" },
             }}
+          />
+
+          <Stack.Screen
+            name="(data-flow)/ageSelector"
+            options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
+            name="(data-flow)/genderSelector"
+            options={{ headerShown: false }}
           />
         </Stack>
       </SafeAreaView>

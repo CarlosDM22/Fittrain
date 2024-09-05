@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { PlusIcon } from "@/components/Icons";
 import { MinusIcon } from "@/components/Icons";
-import { useState } from "react";
+import React, { useState } from "react";
 
 const exercises = [
   {
@@ -52,7 +52,7 @@ function Exercise({ name, reps, sets, image }: any) {
       />
       <View className="flex-1">
         <Text className="text-lg font-bold">{name}</Text>
-        <View className="flex-row justify-between mt-2">
+        <View className="flex-row justify-evenly mt-2">
           <View className="flex-row items-center">
             <Pressable
               onPress={decreaseReps}
