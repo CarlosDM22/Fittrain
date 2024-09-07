@@ -53,6 +53,25 @@ export default function RootLayout() {
             name="(data-flow)/genderSelector"
             options={{ headerShown: false }}
           />
+
+          <Stack.Screen
+            name="(data-flow)/goalSelector"
+            options={{
+              headerShown: false,
+              title: "Objetivo",
+              contentStyle: { backgroundColor: "#222" },
+            }}
+          />
+
+          <Stack.Screen
+            name="(data-flow)/weightSelector"
+            options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
+            name="(data-flow)/heightSelector"
+            options={{ headerShown: false }}
+          />
         </Stack>
       </SafeAreaView>
     </SafeAreaProvider>
