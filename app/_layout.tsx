@@ -72,6 +72,11 @@ export default function RootLayout() {
             name="(data-flow)/heightSelector"
             options={{ headerShown: false }}
           />
+
+          <Stack.Screen
+            name="(data-flow)/difficultSelector"
+            options={{ headerShown: false }}
+          />
         </Stack>
       </SafeAreaView>
     </SafeAreaProvider>
