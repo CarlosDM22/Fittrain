@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@expo/metro-runtime": "~3.2.3",
+    "@quidone/react-native-wheel-picker": "^1.0.1",
     "@react-navigation/material-top-tabs": "^6.6.14",
     "@shopify/flash-list": "1.6.4",
     "expo": "^51.0.31",
