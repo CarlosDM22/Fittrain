@@ -8,7 +8,7 @@ export default function CardGoal({
   image: any;
 }) {
   return (
-    <View className="rounded-2xl p-2 border-2 border-gray-300 m-2">
+    <View className="rounded-2xl p-2 border-2 border-gray-300 ">
       <Image
         resizeMode="cover"
         source={{ uri: image }}

@@ -4,45 +4,56 @@ import React, { useEffect, useRef, useState } from "react";
 import { useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import LargeButton from "@/components/largeButton";
-
-const ITEM_WIDTH = 80; // Anchura y altura de cada ítem de la lista
+import WheelPicker from "@quidone/react-native-wheel-picker";
 
 export default function AgeSelector() {
-  const [selectedAge, setSelectedAge] = useState<number | null>(null);
+  const [selectedAge, setSelectedAge] = useState(0);
   const { width } = useWindowDimensions();
   const insets = useSafeAreaInsets();
 
-  // Crear una lista de edades de 1 a 91 años
-  const ageData = Array.from({ length: 91 }, (_, i) => i + 10);
-
-  // Función para manejar el scroll y seleccionar la edad
-  const handleViewableItemsChanged = ({ viewableItems }: any) => {
-    if (viewableItems.length > 0) {
-      const visibleItem = viewableItems[0].item;
-      setSelectedAge(visibleItem + 1);
-    }
-  };
+  // Crear una lista de edades de 10 a 120 años
+  const ageOptions = [...Array(120).keys()].map((index) => ({
+    value: index,
+    label: index.toString(),
+  }));
 
   return (
-    <View className="flex-1 bg-gray-100">
+    <View
+      className="flex-1 justify-between p-4"
+      style={{ backgroundColor: "#222" }}
+    >
       <Text className="text-dark text-2xl text-center mt-4 font-bold">
         Edad
       </Text>
-      <View className="flex-grow m-2 p-3 shadow-md bg-white rounded-xl ">
-        {/* Whell picker Selector */}
+      <View className="flex items-center justify-center">
+        {/* TODO:  Modo de seleccion de peso kg o lbs */}
+        <Text className="text-2xl text-center text-gray-200">
+          {selectedAge}
+          {" Años"}
+        </Text>
       </View>
-      <LargeButton title="Siguiente" ruta="/heightSelector" />
+      <View className="flex flex-row  items-center justify-center m-2 p-3  rounded-xl ">
+        {/* Whell picker Selector */}
+        <WheelPicker
+          key={ageOptions.length}
+          data={ageOptions}
+          value={selectedAge}
+          itemHeight={50}
+          width={200}
+          itemTextStyle={{
+            fontSize: 20,
+            color: "black",
+            fontWeight: "bold",
+            textAlign: "center",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          onValueChanged={({ item: { value } }) => setSelectedAge(value)}
+        />
+      </View>
+      <View className="flex items-center">
+        <LargeButton title="Siguiente" ruta="/heightSelector" />
+      </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  indicator: {
-    position: "absolute",
-    justifyContent: "center",
-    alignItems: "center",
-    borderWidth: 2,
-    borderColor: "gray",
-    borderRadius: 10,
-  },
-});
