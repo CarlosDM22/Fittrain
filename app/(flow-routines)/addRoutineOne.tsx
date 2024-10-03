@@ -1,7 +1,7 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { styled } from "nativewind";
 import { View, Text, TextInput, Pressable } from "react-native";
-import { Link } from "expo-router";
+import { Link, useNavigation } from "expo-router";
 import ModeSelector from "@/components/RoutineModeSelector";
 
 const daysOfWeek: string[] = [
@@ -35,6 +35,7 @@ const DayButton = React.memo(({ day, isSelected, onPress }: DayButtonProps) => (
 ));
 
 export default function AddRoutineOne() {
+  const navigation = useNavigation();
   const [selectedDays, setSelectedDays] = useState<string[]>([]);
 
   // Memorización de la función toggleDay para evitar recreaciones innecesarias
@@ -45,6 +46,11 @@ export default function AddRoutineOne() {
         : [...prevSelectedDays, day]
     );
   }, []);
+
+  // Establecer las opciones de navegación una vez que el componente se monta
+  useEffect(() => {
+    navigation.setOptions({ headerShown: true });
+  }, [navigation]);
 
   return (
     <View className="flex-1" style={{ backgroundColor: "#222" }}>

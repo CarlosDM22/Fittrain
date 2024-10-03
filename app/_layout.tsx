@@ -1,4 +1,4 @@
-import { Stack } from "expo-router/stack";
+import { Stack, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import {
   SafeAreaProvider,
@@ -6,77 +6,80 @@ import {
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 import { NativeWindStyleSheet } from "nativewind";
+import { useEffect, useState } from "react";
+import { supabase } from "../lib/supabase"; // Asegúrate de tener configurado Supabase
+import { Session } from "@supabase/supabase-js";
 
 export default function RootLayout() {
   const insets = useSafeAreaInsets();
+  const [session, setSession] = useState<Session | null>(null);
+  const router = useRouter();
 
   NativeWindStyleSheet.setOutput({
     default: "native",
   });
+
+  // Verificar el estado de la sesión al cargar la aplicación
+  useEffect(() => {
+    const checkSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      setSession(session);
+
+      if (!session) {
+        // Si no hay sesión, redirigir al login
+        //router.replace("/(auth)/login");
+        //return null;
+      }
+    };
+
+    checkSession();
+
+    // Monitorear cambios en la sesión de Supabase
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setSession(session);
+
+        if (!session) {
+          //router.replace("/(auth)/login");
+          //return;
+        }
+      }
+    );
+
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
+  }, []);
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ flex: 1, backgroundColor: "#222" }}>
         <StatusBar style="light" />
-        <Stack initialRouteName="/ageSelector">
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen
-            name="(flow-routines)/addRoutineOne"
-            options={{
-              headerShown: true,
-              title: "Rutinas",
-              headerTitle: "Nueva Rutina",
-              headerTitleAlign: "center",
-              headerShadowVisible: false,
-              headerTintColor: "white",
-              headerStyle: { backgroundColor: "#222" },
-            }}
-          />
-          <Stack.Screen
-            name="(flow-routines)/addRoutineTwo"
-            options={{
-              headerShown: true,
-              title: "Rutinas",
-              headerTitle: "Nueva Rutina",
-              headerTitleAlign: "center",
-              headerShadowVisible: false,
-              headerTintColor: "white",
-              headerStyle: { backgroundColor: "#222" },
-            }}
-          />
-
-          <Stack.Screen
-            name="(data-flow)/ageSelector"
-            options={{ headerShown: false }}
-          />
-
-          <Stack.Screen
-            name="(data-flow)/genderSelector"
-            options={{ headerShown: false }}
-          />
-
-          <Stack.Screen
-            name="(data-flow)/goalSelector"
-            options={{
-              headerShown: false,
-              title: "Objetivo",
-              contentStyle: { backgroundColor: "#222" },
-            }}
-          />
-
-          <Stack.Screen
-            name="(data-flow)/weightSelector"
-            options={{ headerShown: false }}
-          />
-
-          <Stack.Screen
-            name="(data-flow)/heightSelector"
-            options={{ headerShown: false }}
-          />
-
-          <Stack.Screen
-            name="(data-flow)/difficultSelector"
-            options={{ headerShown: false }}
-          />
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            headerStyle: { backgroundColor: "#222" },
+            headerTintColor: "#fff",
+          }}
+        >
+          {session ? (
+            <>
+              <Stack.Screen
+                name="(tabs)"
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen name="(flow-routines)" />
+            </>
+          ) : (
+            <Stack.Screen
+              name="(auth)/login"
+              options={{ headerShown: false }}
+            />
+          )}
         </Stack>
       </SafeAreaView>
     </SafeAreaProvider>

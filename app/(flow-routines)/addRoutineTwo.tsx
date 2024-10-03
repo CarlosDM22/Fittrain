@@ -8,7 +8,8 @@ import {
 } from "react-native";
 import { PlusIcon } from "@/components/Icons";
 import { MinusIcon } from "@/components/Icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigation } from "expo-router";
 
 const exercises = [
   {
@@ -104,6 +105,12 @@ function Exercise({ name, reps, sets, image }: any) {
 }
 
 export default function AddRoutineTwo() {
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    navigation.setOptions({ headerShown: true });
+  }, [navigation]);
+
   return (
     <View className="flex-1 bg-white">
       <Text className="text-xl font-bold text-center">Ejercicios</Text>
