@@ -26,6 +26,7 @@ export default function TabsLayout() {
       const authenticated = await isAuthenticated();
       if (!authenticated) {
         setLoading(false);
+        //setLoanding(true);
         //router.replace("/(auth)/login"); // Redirige al login si no está autenticado
       } else {
         setLoading(false); // Si está autenticado, deja de cargar

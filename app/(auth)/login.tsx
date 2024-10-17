@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, Button, Alert, Pressable } from "react-native";
-import { supabase } from "../../lib/supabase";
+import { useAuth } from "@/lib/AuthContext";
 import { useRouter } from "expo-router";
 
 export default function Login() {
+  const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -18,21 +19,10 @@ export default function Login() {
 
     // Intentar iniciar sesión con Supabase
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) {
-        Alert.alert("Error", error.message);
-      } else {
-        console.log("Supabase Data:", data);
-        Alert.alert("¡Éxito!", "Has iniciado sesión correctamente");
-        // Aquí puedes redirigir a la pantalla principal o lo que sea necesario
-        router.replace("/");
-      }
-    } catch (error: any) {
-      console.log("Error:", error);
+      await login(email, password);
+      Alert.alert("¡Éxito!", "Has iniciado sesión correctamente");
+      // Redirige o realiza otras acciones necesarias
+    } catch (error) {
       Alert.alert("Error", error.message);
     }
   };
@@ -68,6 +58,14 @@ export default function Login() {
             className="bg-blue-500 p-3 rounded max-w-3xl"
           >
             <Text className="text-white text-center">Iniciar Sesion</Text>
+          </Pressable>
+        </View>
+        <View>
+          {/* Enlace al registro */}
+          <Pressable onPress={() => router.push("/(auth)/register")}>
+            <Text style={{ color: "blue", marginTop: 20, textAlign: "center" }}>
+              ¿No tienes una cuenta? Regístrate
+            </Text>
           </Pressable>
         </View>
       </View>

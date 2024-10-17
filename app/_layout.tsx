@@ -6,9 +6,10 @@ import {
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 import { NativeWindStyleSheet } from "nativewind";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase"; // Asegúrate de tener configurado Supabase
 import { Session } from "@supabase/supabase-js";
+import { AuthProvider } from "@/lib/AuthContext";
 
 export default function RootLayout() {
   const insets = useSafeAreaInsets();
@@ -57,30 +58,32 @@ export default function RootLayout() {
     <SafeAreaProvider>
       <SafeAreaView style={{ flex: 1, backgroundColor: "#222" }}>
         <StatusBar style="light" />
-        <Stack
-          screenOptions={{
-            headerShown: false,
-            headerStyle: { backgroundColor: "#222" },
-            headerTintColor: "#fff",
-          }}
-        >
-          {session ? (
-            <>
+        <AuthProvider>
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              headerStyle: { backgroundColor: "#222" },
+              headerTintColor: "#fff",
+            }}
+          >
+            {session ? (
+              <>
+                <Stack.Screen
+                  name="(tabs)"
+                  options={{
+                    headerShown: false,
+                  }}
+                />
+                <Stack.Screen name="(flow-routines)" />
+              </>
+            ) : (
               <Stack.Screen
-                name="(tabs)"
-                options={{
-                  headerShown: false,
-                }}
+                name="(auth)/login"
+                options={{ headerShown: false }}
               />
-              <Stack.Screen name="(flow-routines)" />
-            </>
-          ) : (
-            <Stack.Screen
-              name="(auth)/login"
-              options={{ headerShown: false }}
-            />
-          )}
-        </Stack>
+            )}
+          </Stack>
+        </AuthProvider>
       </SafeAreaView>
     </SafeAreaProvider>
   );
