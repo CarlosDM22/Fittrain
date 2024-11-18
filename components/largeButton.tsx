@@ -5,6 +5,7 @@ export default function LargeButton({
   title,
   ruta,
   disabled = false,
+  onPress,
 }: {
   title: string;
   ruta: string;

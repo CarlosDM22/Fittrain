@@ -1,7 +1,9 @@
 import LargeButton from "@/components/largeButton";
+import { useUserStore } from "@/hooks/userStore";
 import WheelPicker from "@quidone/react-native-wheel-picker";
+import { useRouter } from "expo-router";
 import { useState } from "react";
-import { Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 
 const weightOptions = [...Array(200).keys()].map((index) => ({
   value: index,
@@ -10,6 +12,16 @@ const weightOptions = [...Array(200).keys()].map((index) => ({
 
 export default function HeightSelector() {
   const [selectedHeight, setSelectedHeight] = useState(0);
+
+  const updateUserData = useUserStore((state) => state.updateUserData);
+  const router = useRouter();
+
+  const handleNext = () => {
+    updateUserData("altura", selectedHeight);
+    // Redirigir a la siguiente pantalla
+    router.push("/goalSelector");
+  };
+
   return (
     <View
       className="flex-1 justify-between p-4"
@@ -49,8 +61,21 @@ export default function HeightSelector() {
         </View>
       </View>
 
-      <View className="flex items-center">
-        <LargeButton title="Siguiente" ruta="/goalSelector" />
+      {/* Botón Siguiente */}
+      <View className="flex items-center m-2">
+        <View className="flex items-center">
+          <Pressable
+            className={`${
+              selectedHeight ? "bg-amber-500/80" : "bg-gray-500/50"
+            } p-6 rounded-2xl m-6 active:bg-amber-700 active:scale-95 transition w-full max-w-2xl`}
+            onPress={() => handleNext()}
+            disabled={!selectedHeight}
+          >
+            <Text className="text-lg font-bold text-center text-white">
+              Siguiente
+            </Text>
+          </Pressable>
+        </View>
       </View>
     </View>
   );

@@ -1,4 +1,6 @@
 import LargeButton from "@/components/largeButton";
+import { useUserStore } from "@/hooks/userStore";
+import { useRouter } from "expo-router";
 import { styled } from "nativewind";
 import { useState } from "react";
 import {
@@ -15,6 +17,15 @@ export default function GenderSelector() {
   const [selectedGender, setSelectedGender] = useState<Gender | null>(null);
   const { width } = useWindowDimensions();
   const GenderOption = styled(Pressable);
+
+  const updateUserData = useUserStore((state) => state.updateUserData);
+  const router = useRouter();
+
+  const handleNext = () => {
+    updateUserData("sexo", selectedGender);
+    // Redirigir a la siguiente pantalla
+    router.push("/ageSelector");
+  };
 
   return (
     <View className="flex-1 bg-black justify-center">
@@ -104,11 +115,19 @@ export default function GenderSelector() {
 
       {/* Botón Siguiente */}
       <View className="flex items-center m-2">
-        <LargeButton
-          title="Siguiente"
-          ruta="/difficultSelector"
-          disabled={!selectedGender}
-        />
+        <View className="flex items-center">
+          <Pressable
+            className={`${
+              selectedGender ? "bg-amber-500/80" : "bg-gray-500/50"
+            } p-6 rounded-2xl m-6 active:bg-amber-700 active:scale-95 transition w-full max-w-2xl`}
+            onPress={() => handleNext()}
+            disabled={!selectedGender}
+          >
+            <Text className="text-lg font-bold text-center text-white">
+              Siguiente
+            </Text>
+          </Pressable>
+        </View>
       </View>
     </View>
   );

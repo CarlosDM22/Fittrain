@@ -6,6 +6,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx"],
+  "include": ["**/*.ts", "**/*.tsx", "hooks/usePlanStore.js"],
   "exclude": ["node_modules"]
 }

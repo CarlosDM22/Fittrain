@@ -22,7 +22,8 @@ export default function Login() {
       await login(email, password);
       Alert.alert("¡Éxito!", "Has iniciado sesión correctamente");
       // Redirige o realiza otras acciones necesarias
-    } catch (error) {
+      router.replace("/rutinas");
+    } catch (error: any) {
       Alert.alert("Error", error.message);
     }
   };
@@ -32,8 +33,8 @@ export default function Login() {
       className="flex-1 justify-center items-center "
       style={{ backgroundColor: "#222" }}
     >
-      <View className="w-4/5 bg-white rounded-lg p-5 shadow-lg">
-        <Text className="text-2xl font-bold mb-5 text-center">Login</Text>
+      <View className="w-5/6 bg-white rounded-lg p-5 shadow-lg">
+        <Text className="text-3xl font-bold mb-5 text-center">Login</Text>
 
         <TextInput
           placeholder="Correo Electrónico"
@@ -46,6 +47,7 @@ export default function Login() {
         <TextInput
           placeholder="Contraseña"
           placeholderTextColor="gray"
+          autoCapitalize="none"
           secureTextEntry
           value={password}
           onChangeText={setPassword}
@@ -57,14 +59,19 @@ export default function Login() {
             onPress={handleLogin}
             className="bg-blue-500 p-3 rounded max-w-3xl"
           >
-            <Text className="text-white text-center">Iniciar Sesion</Text>
+            <Text className="text-base text-white text-center">
+              Iniciar Sesion
+            </Text>
           </Pressable>
         </View>
         <View>
           {/* Enlace al registro */}
           <Pressable onPress={() => router.push("/(auth)/register")}>
-            <Text style={{ color: "blue", marginTop: 20, textAlign: "center" }}>
-              ¿No tienes una cuenta? Regístrate
+            <Text className="mt-2 text-base text-center">
+              ¿No tienes una cuenta?
+            </Text>
+            <Text className="text-base text-center text-blue-500">
+              Regístrate
             </Text>
           </Pressable>
         </View>

@@ -1,7 +1,9 @@
 import LargeButton from "@/components/largeButton";
+import { useUserStore } from "@/hooks/userStore";
 import WheelPicker from "@quidone/react-native-wheel-picker";
+import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 
 const weightOptions = [...Array(200).keys()].map((index) => ({
   value: index,
@@ -17,6 +19,16 @@ export default function WeightSelector() {
   const [selectedWeight, setSelectedWeight] = useState(0);
   const [selectedDecimal, setSelectedDecimal] = useState(0);
   const [totalWeight, setTotalWeight] = useState(0);
+
+  const updateUserData = useUserStore((state) => state.updateUserData);
+  const router = useRouter();
+
+  const handleNext = () => {
+    console.log(totalWeight);
+    updateUserData("peso", totalWeight);
+    // Redirigir a la siguiente pantalla
+    router.push("/heightSelector");
+  };
 
   // Actualiza el total del peso cada vez que cambian los valores
   useEffect(() => {
@@ -83,8 +95,21 @@ export default function WeightSelector() {
         </View>
       </View>
 
-      <View className="flex items-center">
-        <LargeButton title="Siguiente" ruta="/goalSelector" />
+      {/* Botón Siguiente */}
+      <View className="flex items-center m-2">
+        <View className="flex items-center">
+          <Pressable
+            className={`${
+              totalWeight ? "bg-amber-500/80" : "bg-gray-500/50"
+            } p-6 rounded-2xl m-6 active:bg-amber-700 active:scale-95 transition w-full max-w-2xl`}
+            onPress={() => handleNext()}
+            disabled={!totalWeight}
+          >
+            <Text className="text-lg font-bold text-center text-white">
+              Siguiente
+            </Text>
+          </Pressable>
+        </View>
       </View>
     </View>
   );

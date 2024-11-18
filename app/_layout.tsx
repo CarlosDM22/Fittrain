@@ -30,8 +30,8 @@ export default function RootLayout() {
 
       if (!session) {
         // Si no hay sesión, redirigir al login
-        //router.replace("/(auth)/login");
-        //return null;
+        router.replace("/(auth)/login");
+        return null;
       }
     };
 
@@ -43,8 +43,8 @@ export default function RootLayout() {
         setSession(session);
 
         if (!session) {
-          //router.replace("/(auth)/login");
-          //return;
+          router.replace("/(auth)/login");
+          return;
         }
       }
     );
