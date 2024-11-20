@@ -1,9 +1,10 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { styled } from "nativewind";
 import { View, Text, TextInput, Pressable } from "react-native";
-import { Link, useNavigation } from "expo-router";
+import { useNavigation, useRouter } from "expo-router";
 import usePlanStore from "@/hooks/usePlanStore";
 import { useAuth } from "@/lib/AuthContext";
+import { v4 as uuidv4 } from "uuid";
 
 const daysOfWeek: string[] = [
   "Lunes",
@@ -15,7 +16,6 @@ const daysOfWeek: string[] = [
   "Domingo",
 ];
 
-// Tipos para las props del componente DayButton
 type DayButtonProps = {
   day: string;
   isSelected: boolean;
@@ -37,41 +37,15 @@ const DayButton = React.memo(({ day, isSelected, onPress }: DayButtonProps) => (
 
 export default function AddRoutineOne() {
   const { session } = useAuth();
-  const [nombre, setNombre] = useState("");
-  const [descripcion, setDescripcion] = useState("");
-  const [tipoEntrenamiento, setTiempoEntrenamiento] = useState("");
-  const [frecuencia, setFrecuencia] = useState(0);
-  const [days, setDays] = useState<string[]>([]);
+  const setTempPlan = usePlanStore((state) => state.setTempPlan);
+  const [routineName, setRoutineName] = useState("");
+  const [description, setDescription] = useState("");
+  const router = useRouter();
 
-  const handleAddPlan = () => {
-    const newPlan = {
-      usuario_id: session.user.id, // ID del usuario
-      nombre: "",
-      descripcion: "Plan para mejorar fuerza",
-      tipo: "entrenamiento",
-      frecuencia: 3,
-      dias: "Lunes, Miércoles, Viernes",
-    };
-
-    addPlan(newPlan);
-
-    const newRoutine = {
-      plan_id: newPlan.id,
-      dia: "Lunes",
-      nombre: "Rutina de fuerza",
-      descanso_entre_series: 60,
-      descanso_entre_ejercicios: 90,
-    };
-
-    addRoutine(newRoutine);
-  };
   const navigation = useNavigation();
   const [selectedDays, setSelectedDays] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const addPlan = usePlanStore((state) => state.addPlan);
-  const addRoutine = usePlanStore((state) => state.addRoutine);
-
-  // Memorización de la función toggleDay para evitar recreaciones innecesarias
   const toggleDay = useCallback((day: string) => {
     setSelectedDays((prevSelectedDays) =>
       prevSelectedDays.includes(day)
@@ -80,10 +54,36 @@ export default function AddRoutineOne() {
     );
   }, []);
 
-  // Establecer las opciones de navegación una vez que el componente se monta
   useEffect(() => {
     navigation.setOptions({ headerShown: true, title: "Nueva Rutina" });
   }, [navigation]);
+
+  const handleNext = async () => {
+    const planid = uuidv4();
+
+    if (!routineName || selectedDays.length === 0) {
+      console.log("Por favor, completa todos los campos.");
+      return;
+    }
+
+    setIsLoading(true);
+
+    const planData = {
+      id: planid,
+      nombre: routineName,
+      descripcion: description,
+      tipo: "Alimentacion",
+      frecuencia: selectedDays.length,
+      dias: selectedDays.join(","),
+      usuario_id: session.user.id,
+    };
+
+    setTempPlan(planData); // Guarda la rutina temporal
+
+    console.log(planData);
+
+    router.push("/addRoutineTwo");
+  };
 
   return (
     <View className="flex-1" style={{ backgroundColor: "#222" }}>
@@ -91,11 +91,15 @@ export default function AddRoutineOne() {
         placeholder="Nombre"
         placeholderTextColor={"white"}
         className="p-3 m-3 border-2 border-white rounded text-white"
+        value={routineName}
+        onChangeText={setRoutineName}
       />
       <TextInput
         placeholder="Descripción (opcional)"
         placeholderTextColor={"white"}
         className="p-3 m-3 border-2 border-white rounded h-20 text-white"
+        value={description}
+        onChangeText={setDescription}
       />
 
       <View>
@@ -111,9 +115,15 @@ export default function AddRoutineOne() {
           ))}
         </View>
 
-        <Pressable className="bg-amber-500/80 p-6 rounded-2xl m-3 active:bg-amber-700 active:scale-95 transition">
+        <Pressable
+          className={`bg-amber-500/80 p-6 rounded-2xl m-3 active:bg-amber-700 active:scale-95 transition ${isLoading ? "opacity-50" : ""}`}
+          onPress={handleNext}
+          disabled={isLoading}
+        >
           <View className="flex-row justify-around items-center">
-            <Text className="text-lg font-bold">Siguiente</Text>
+            <Text className="text-lg font-bold">
+              {isLoading ? "Cargando..." : "Siguiente"}
+            </Text>
           </View>
         </Pressable>
       </View>

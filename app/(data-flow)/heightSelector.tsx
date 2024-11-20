@@ -36,7 +36,7 @@ export default function HeightSelector() {
         {/* TODO:  Modo de seleccion de peso kg o lbs */}
         <Text className="font-sans text-4xl text-center text-gray-200">
           {selectedHeight}
-          {" kg"}
+          {" CM"}
         </Text>
       </View>
 

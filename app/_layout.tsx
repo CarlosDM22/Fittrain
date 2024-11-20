@@ -75,6 +75,12 @@ export default function RootLayout() {
                   }}
                 />
                 <Stack.Screen name="(flow-routines)" />
+                <Stack.Screen
+                  name="(flow-routines)/exercisesModal"
+                  options={{
+                    presentation: "modal",
+                  }}
+                />
               </>
             ) : (
               <Stack.Screen

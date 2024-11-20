@@ -1,70 +1,58 @@
-import { create } from "zustand"; // Importa create from "zustand";
+import { create } from "zustand";
+import { supabase } from "../lib/supabase";
 
-const useStore = create((set) => ({
-  plans: [], // Arreglo para almacenar los planes
-  routines: [], // Arreglo para almacenar las rutinas
-  exercises: [], // Arreglo para almacenar los ejercicios
+const usePlanStore = create((set) => ({
+  plans: [],
 
-  // Acción para agregar un plan
-  addPlan: (plan) =>
+  tempPlan: null, // Plan temporal antes de ser guardado en la base de datos
+
+  routines: [], // Rutinas
+
+  exercises: [],
+
+  // Función para establecer un plan temporal
+  setTempPlan: (plan) => set({ tempPlan: plan }),
+  resetTempPlan: () => set({ tempPlan: null }),
+
+  setRoutines: (routines) => set({ routines }),
+
+  setExercises: (exercises) => set({ exercises }),
+
+  // Función para traer los planes de la base de datos
+
+  // Función para guardar el plan en Supabase y limpiar el estado temporal
+  saveTempPlan: async () => {
+    const { tempPlan } = usePlanStore.getState(); // Obtén el plan temporal actual
+    if (!tempPlan) return null;
+
+    const { data, error } = await supabase
+      .from("Plan")
+      .insert(tempPlan)
+      .select();
+    if (error) {
+      console.error("Error al guardar el plan:", error);
+      return null;
+    }
+
     set((state) => ({
-      plans: [...state.plans, plan],
-    })),
+      plans: [...state.plans, ...data],
+      tempPlan: null, // Limpia el plan temporal
+    }));
 
-  // Acción para agregar una rutina
-  addRoutine: (routine) =>
-    set((state) => ({
-      routines: [...state.routines, routine],
-    })),
+    return data[0]; // Retorna el plan insertado
+  },
 
-  // Acción para actualizar un plan (si es necesario)
-  updatePlan: (id, updatedPlan) =>
-    set((state) => ({
-      plans: state.plans.map((plan) =>
-        plan.id === id ? { ...plan, ...updatedPlan } : plan
-      ),
-    })),
+  // Función para obtener todos los planes de la base de datos
+  fetchPlans: async () => {
+    const { data, error } = await supabase.from("Plan").select("*");
 
-  // Acción para actualizar una rutina (si es necesario)
-  updateRoutine: (id, updatedRoutine) =>
-    set((state) => ({
-      routines: state.routines.map((routine) =>
-        routine.id === id ? { ...routine, ...updatedRoutine } : routine
-      ),
-    })),
+    if (error) {
+      console.error("Error al obtener los planes:", error);
+      return;
+    }
 
-  /*************  ✨ Codeium Command 🌟  *************/
-  /**
-   * Acción para eliminar un plan
-   * @param {number} id Identificador del plan a eliminar
-   * @returns {object} Estado actualizado sin el plan eliminado
-   */
-  // Acción para eliminar un plan
-  deletePlan: (id) =>
-    set((state) => ({
-      // Filtra el arreglo de planes y devuelve un nuevo arreglo
-      // que no incluye el plan con el id proporcionado
-      plans: state.plans.filter((plan) => plan.id !== id),
-    })),
-  /******  173d8d82-e112-465e-b85a-905fc77269b2  *******/
-
-  // Acción para eliminar una rutina
-  deleteRoutine: (id) =>
-    set((state) => ({
-      routines: state.routines.filter((routine) => routine.id !== id),
-    })),
-
-  addExercise: (exercise) =>
-    set((state) => ({
-      exercises: [...state.exercises, exercise],
-    })),
-
-  updateExercise: (id, updatedExercise) =>
-    set((state) => ({
-      exercises: state.exercises.map((exercise) =>
-        exercise.id === id ? { ...exercise, ...updatedExercise } : exercise
-      ),
-    })),
+    set({ plans: data || [] });
+  },
 }));
 
-export default useStore;
+export default usePlanStore;
