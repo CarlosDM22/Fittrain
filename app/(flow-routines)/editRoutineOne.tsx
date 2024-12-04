@@ -1,11 +1,9 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { styled } from "nativewind";
 import { View, Text, TextInput, Pressable } from "react-native";
-import { useNavigation, useRouter } from "expo-router";
+import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import usePlanStore from "@/hooks/usePlanStore";
 import { useAuth } from "@/lib/AuthContext";
-import "react-native-get-random-values";
-import { v4 as uuidv4 } from "uuid";
 
 const daysOfWeek: string[] = [
   "Lunes",
@@ -36,13 +34,17 @@ const DayButton = React.memo(({ day, isSelected, onPress }: DayButtonProps) => (
   </StyledPressable>
 ));
 
-export default function AddRoutineOne() {
+export default function EditRoutineOne() {
+  const { updatePlan, plans } = usePlanStore();
   const { session } = useAuth();
+
+  // Obtener el id del plan desde los parámetros de la URL
+  const { planId } = useLocalSearchParams();
   const setTempPlan = usePlanStore((state) => state.setTempPlan);
+
   const [routineName, setRoutineName] = useState("");
   const [description, setDescription] = useState("");
   const router = useRouter();
-
   const navigation = useNavigation();
   const [selectedDays, setSelectedDays] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -56,12 +58,25 @@ export default function AddRoutineOne() {
   }, []);
 
   useEffect(() => {
-    navigation.setOptions({ headerShown: true, title: "Nueva Rutina" });
-  }, [navigation]);
+    if (planId) {
+      // Verifica si el planId es correcto
+      console.log("Plan ID recibido:", planId);
+
+      // Buscar el plan por planId
+      const plan = plans.find((p) => p.id === parseInt(planId)); // Asegúrate de que planId sea el tipo correcto
+      if (plan) {
+        setRoutineName(plan.nombre);
+        setDescription(plan.descripcion);
+        setSelectedDays(plan.dias.split(","));
+      } else {
+        console.log("No se encontró el plan con ID:", planId);
+      }
+    }
+  }, [planId, plans]);
+
+  navigation.setOptions({ headerShown: true, title: "Editar Rutina" });
 
   const handleNext = async () => {
-    const planid = uuidv4();
-
     if (!routineName || selectedDays.length === 0) {
       console.log("Por favor, completa todos los campos.");
       return;
@@ -70,7 +85,7 @@ export default function AddRoutineOne() {
     setIsLoading(true);
 
     const planData = {
-      id: planid,
+      id: planId, // El id que obtuviste desde la URL
       nombre: routineName,
       descripcion: description,
       tipo: "Entrenamiento",
@@ -80,11 +95,11 @@ export default function AddRoutineOne() {
       dificultad: "Custom",
     };
 
-    setTempPlan(planData); // Guarda la rutina temporal
+    // Llamar a la función que actualiza el plan en el store
+    setTempPlan(planData);
 
-    console.log(planData);
     setIsLoading(false);
-    router.push("/addRoutineTwo");
+    router.push("/editRoutineTwo");
   };
 
   return (

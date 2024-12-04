@@ -18,14 +18,15 @@ import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 import { TrashIcon } from "@/components/Icons";
 
-export default function AddRoutineTwo() {
-  const { tempPlan, savePlanAndRoutines } = usePlanStore();
+export default function EditRoutineTwo() {
+  const { tempPlan, UpdatePlanAndRoutines } = usePlanStore();
   const {
     routines,
     agregarRutina,
     updateRoutine,
     updateExerciseInRoutine,
     removeExerciseFromRoutine,
+    fetchRoutinesandExercises,
   } = useRoutineStore(); // Métodos del store
   const router = useRouter();
   const layout = Dimensions.get("window");
@@ -44,26 +45,22 @@ export default function AddRoutineTwo() {
   }));
 
   useEffect(() => {
+    const idTempPlan = tempPlan?.id;
+    if (idTempPlan) {
+      fetchRoutinesandExercises(idTempPlan);
+    }
     // Inicializa las rutinas al cargar el componente
     routes.forEach((route) => {
       const idRtn = uuidv4();
       const dayKey = route.key;
       if (!routines[dayKey]) {
-        agregarRutina(dayKey, {
-          idRtn: idRtn,
-          dia: dayKey,
-          nombre: "Ejercicios",
-          descansoEntreSeries: { minutos: 0, segundos: 0 },
-          descansoEntreEjercicios: { minutos: 0, segundos: 0 },
-          ejercicios: [],
-        });
       }
     });
   }, [routes, routines, agregarRutina]);
 
   const saveRoutine = async () => {
     console.log("Rutinas guardadas con sus Ejercicios y datos:", routines);
-    savePlanAndRoutines(routines);
+    UpdatePlanAndRoutines(routines);
     // Llamar a saveTempPlan y pasar las rutinas para que las guarde junto con el plan
   };
 

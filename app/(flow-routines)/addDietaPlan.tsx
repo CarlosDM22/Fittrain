@@ -36,7 +36,7 @@ const DayButton = React.memo(({ day, isSelected, onPress }: DayButtonProps) => (
   </StyledPressable>
 ));
 
-export default function AddRoutineOne() {
+export default function AddDietaPlan() {
   const { session } = useAuth();
   const setTempPlan = usePlanStore((state) => state.setTempPlan);
   const [routineName, setRoutineName] = useState("");
@@ -56,7 +56,7 @@ export default function AddRoutineOne() {
   }, []);
 
   useEffect(() => {
-    navigation.setOptions({ headerShown: true, title: "Nueva Rutina" });
+    navigation.setOptions({ headerShown: true, title: "Nueva Dieta" });
   }, [navigation]);
 
   const handleNext = async () => {
@@ -73,7 +73,7 @@ export default function AddRoutineOne() {
       id: planid,
       nombre: routineName,
       descripcion: description,
-      tipo: "Entrenamiento",
+      tipo: "Alimentacion",
       frecuencia: selectedDays.length,
       dias: selectedDays.join(","),
       usuario_id: session.user.id,
@@ -84,7 +84,7 @@ export default function AddRoutineOne() {
 
     console.log(planData);
     setIsLoading(false);
-    router.push("/addRoutineTwo");
+    router.push("/addDietaRutina");
   };
 
   return (

@@ -3,8 +3,10 @@ import { CalendarProvider } from "react-native-calendars";
 import { CardRoutine } from "@/components/CardRoutine";
 import CustomCalendar from "@/components/CustomCalendar";
 import { PlusIcon } from "@/components/Icons";
+import { usePlanStore } from "@/hooks/usePlanStore";
 import { Link, Stack } from "expo-router";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import PlanList from "@/components/PlanList";
 
 const TopTab = createMaterialTopTabNavigator();
 
@@ -19,11 +21,11 @@ export default function RutinasLayout() {
       <TopTab.Navigator
         screenOptions={{
           tabBarStyle: {
-            backgroundColor: "#fff",
-            height: 60,
+            backgroundColor: "#222",
           },
           tabBarLabelStyle: {
-            fontSize: 20,
+            fontSize: 16,
+            color: "#fff",
           },
           tabBarIndicatorStyle: {
             backgroundColor: "#fff",
@@ -32,7 +34,7 @@ export default function RutinasLayout() {
       >
         <TopTab.Screen
           name="Rutinas"
-          component={CardRoutine}
+          component={PlanList}
           options={{ tabBarLabel: "Rutinas" }}
         />
         <TopTab.Screen
@@ -40,11 +42,6 @@ export default function RutinasLayout() {
           component={screencomponent}
           options={{ tabBarLabel: "Hoy" }}
           tabBarLabelStyle={{ color: "red" }}
-        />
-        <TopTab.Screen
-          name="Mas"
-          component={screencomponent}
-          options={{ tabBarLabel: "Mas" }}
         />
       </TopTab.Navigator>
     </CalendarProvider>
