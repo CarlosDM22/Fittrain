@@ -1,5 +1,1 @@
-"# Fittrain"
-
-Aplication to track your training
-
-Hola soy Cricri
+Primera Aplicación muy Penka , 
