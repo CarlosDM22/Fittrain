@@ -61,6 +61,7 @@ export default function EditRoutineTwo() {
   const saveRoutine = async () => {
     console.log("Rutinas guardadas con sus Ejercicios y datos:", routines);
     UpdatePlanAndRoutines(routines);
+    router.replace("/rutinas");
     // Llamar a saveTempPlan y pasar las rutinas para que las guarde junto con el plan
   };
 

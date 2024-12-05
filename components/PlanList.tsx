@@ -29,8 +29,13 @@ export default function PlansList() {
 
   if (!plans.length) {
     return (
-      <View className="flex-1 justify-center items-center">
-        <Text className="text-gray-500">No hay planes disponibles</Text>
+      <View className="flex-grow">
+        <Text className="text-center justify-center text-gray-500">
+          No hay planes creados
+        </Text>
+        <View className="flex-1">
+          <CardRoutine />
+        </View>
       </View>
     );
   }
@@ -65,9 +70,7 @@ export default function PlansList() {
                 className="w-16 h-16 rounded-lg"
               />
             </Pressable>
-          ) : (
-            <Text className="text-gray-500">No hay planes disponibles</Text>
-          )
+          ) : null
         }
       />
       <CardRoutine />

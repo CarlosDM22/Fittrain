@@ -94,7 +94,7 @@ export default function SeleccionarRutinas() {
         usuario_id: userId,
         nombre: "Plan Normal",
         descripcion: "Plan diseñado para usuarios intermedios.",
-        tipo: "Fuerza",
+        tipo: "Entrenamiento",
         frecuencia: 4,
         dificultad: "Normal",
         dias: "Lunes, Miércoles, Viernes, Domingo",
