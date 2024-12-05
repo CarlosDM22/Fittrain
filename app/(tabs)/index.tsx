@@ -1,4 +1,3 @@
-import ExampleChart from "@/components/chats/ExampleChart";
 import ProgressChart from "@/components/Grafico_Prueba";
 import { View, Text, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";

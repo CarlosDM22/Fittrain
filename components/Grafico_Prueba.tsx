@@ -9,7 +9,7 @@ import {
 
 const ProgressChart = ({ title, data, height, width, label }) => {
   return (
-    <View style={styles.container}>
+    <View style={styles.container} accessibilityHint="Grafico">
       {/* Título dinámico */}
       <Text style={styles.title}>{title}</Text>
 

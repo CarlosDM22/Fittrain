@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Fittrain",
-    "slug": "Fittrain",
+    "slug": "fittrain",
     "scheme": "Fittrain",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -19,7 +19,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.carlosdm22.fittrain"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -39,6 +40,15 @@
           }
         }
       ]
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "40261138-f90a-4114-91f2-11f463196fac"
+      }
+    },
+    "owner": "carlosdm22"
   }
 }
